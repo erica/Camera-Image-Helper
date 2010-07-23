@@ -45,9 +45,12 @@ static CameraImageHelper *sharedInstance = nil;
 		return;
 	}
 	
+	// Update thanks to Jake Marsh who points out not to use the main queue
+	dispatch_queue_t queue = dispatch_queue_create("com.myapp.tasks.grabcameraframes", NULL);
 	AVCaptureVideoDataOutput *captureOutput = [[[AVCaptureVideoDataOutput alloc] init] autorelease];
 	captureOutput.alwaysDiscardsLateVideoFrames = YES; 
-	[captureOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
+	[captureOutput setSampleBufferDelegate:self queue:queue];
+	// dispatch_release(queue); // Will not work when uncommented -- apparently reference count is altered by setSampleBufferDelegate:queue:
 	
 	NSDictionary *settings = [NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA] forKey:(NSString *)kCVPixelBufferPixelFormatTypeKey];
 	[captureOutput setVideoSettings:settings];
