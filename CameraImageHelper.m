@@ -14,8 +14,10 @@
 @synthesize session,  image;
 static CameraImageHelper *sharedInstance = nil;
 
+// Autorelease pool added thanks to suggestion by Josh Snyder
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
     CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer); 
     CVPixelBufferLockBaseAddress(imageBuffer,0); 
     uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(imageBuffer); 
@@ -33,6 +35,7 @@ static CameraImageHelper *sharedInstance = nil;
     CGContextRelease(context); 
     CGColorSpaceRelease(colorSpace);
 	CGImageRelease(newImage);
+	[pool drain];
 }
 
 - (void) initialize

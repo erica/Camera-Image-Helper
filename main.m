@@ -42,7 +42,7 @@ void showAlert(id formatstring,...)
 	imageView.image = [CameraImageHelper image];
 }
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
 	self.navigationController.navigationBar.tintColor = COOKBOOK_PURPLE_COLOR;
 	if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])

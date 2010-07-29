@@ -6,3 +6,7 @@ git:
 
 clean:
 	rm -rf */*/build
+
+sync:
+	cp *.[hm] ~/Desktop/11-New\ Edition\ Sample\ Code/01-Essential\ Recipes/C07-Images/99-Live\ Input\ Buffer
+
