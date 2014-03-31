@@ -28,7 +28,7 @@
 
 #pragma mark - Info
 
-+ (NSInteger) numberOfCameras
++ (int) numberOfCameras
 {
     return [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo].count;
 }
@@ -273,6 +273,54 @@
     CIImage *ciimage = self.ciImage;
     UIImage *uiimage = [UIImage imageWithCIImage:ciimage orientation:orientation];
     return uiimage;
+}
+
+#pragma mark - Metadata
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
+{
+    // NSLog(@"%@", [(AVCaptureMetadataOutput *) captureOutput availableMetadataObjectTypes]);
+
+    NSArray *codeTypes = @[AVMetadataObjectTypeUPCECode,
+                           AVMetadataObjectTypeCode39Code,
+                           AVMetadataObjectTypeCode39Mod43Code,
+                           AVMetadataObjectTypeEAN13Code,
+                           AVMetadataObjectTypeEAN8Code,
+                           AVMetadataObjectTypeCode93Code,
+                           AVMetadataObjectTypeCode128Code,
+                           AVMetadataObjectTypePDF417Code,
+                           AVMetadataObjectTypeQRCode,
+                           AVMetadataObjectTypeAztecCode];
+    
+    for (AVMetadataObject *metadata in metadataObjects)
+    {
+        if ([codeTypes containsObject:metadata.type])
+        {
+            // Match
+            NSString *stringValue = [(AVMetadataMachineReadableCodeObject *)metadata stringValue];
+            [_barcodeDelegate processBarcode:stringValue withType:metadata.type withMetadata:metadata];
+        }
+        else
+            NSLog(@"Captured unknown metadata object: %@", metadata.type);
+
+    }
+}
+
+- (void) addMetaDataOutput
+{
+    [_session beginConfiguration];
+    
+    // Remove existing outputs
+    NSArray *outputs = _session.outputs;
+    for (AVCaptureOutput *output in outputs)
+        [_session removeOutput:output];
+    
+    // Create capture output
+    AVCaptureMetadataOutput *output = [[AVCaptureMetadataOutput alloc] init];
+    [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+
+    [_session addOutput:output];
+    output.metadataObjectTypes = output.availableMetadataObjectTypes;
+    [_session commitConfiguration];
 }
 
 #pragma mark - Start/Stop

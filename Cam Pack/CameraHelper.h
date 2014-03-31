@@ -24,6 +24,10 @@ typedef enum {
     kFill        // AVLayerVideoGravityResizeAspectFill
 } previewAspect;
 
+@protocol CameraHelperBarcodeDelegate <NSObject>
+- (void) processBarcode: (NSString *) barcode withType: (NSString *) codeType withMetadata: (AVMetadataObject *) metadata;
+@end
+
 // General Camera Assistance
 @interface CameraHelper : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate>
 
@@ -32,7 +36,7 @@ typedef enum {
 - (void) startSession;
 - (void) stopSession;
 
-+ (NSInteger) numberOfCameras;
++ (int) numberOfCameras;
 + (BOOL) backCameraAvailable;
 + (BOOL) frontCameraAvailable;
 
@@ -61,4 +65,9 @@ typedef enum {
 @property (nonatomic, readonly) CIImage *ciImage;
 @property (nonatomic, readonly) UIImage *currentImage;
 - (void) addImageGrabbingOutput;
+
+@property (nonatomic) id <CameraHelperBarcodeDelegate> barcodeDelegate;
+- (void) addMetaDataOutput;
+
+
 @end

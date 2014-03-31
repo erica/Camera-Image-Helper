@@ -6,6 +6,8 @@
 
 #import <Foundation/Foundation.h>
 
+// Correspondences Updated 3/31/14. Thanks Andrea, who pointed out I'd swapped out 6 and 8.
+
 /*
  
  HOME BUTTON CAMERA  OUTPUT  UNMIRRORED       MIRRORED         ORIENTATION
@@ -21,7 +23,7 @@
  
  AVAILABLE ORIENTATIONS: EXIF and UIImageOrientation
  
- topleft toprt   botrt  botleft   leftop      righttop     rightbot   leftbot
+ topleft toprt   botrt  botleft   leftop      leftbot     rightbot   righttop
  EXIF 1    2       3      4         5            6           7          8
  
  XXXXXX  XXXXXX      XX  XX      XXXXXXXXXX  XX                  XX  XXXXXXXXXX
@@ -30,31 +32,31 @@
  XX          XX      XX  XX
  XX          XX  XXXXXX  XXXXXX
  
- UI 0      4       1      5         6            2           7           3       
-    up    upmirror down  downmir leftmir      left         rightmir    right
+ UI 0      4       1      5         6            3           7           2
+ up    upmirror  down   downmir  leftmir        right      rightmir     left
  
  
  
  MAPPINGS BETWEEN ORIENTATIONS:
  
- {1, 3, 6, 8, 2, 4, 5, 7};  EXIF
+ {1, 3, 8, 6, 2, 4, 5, 7};  EXIF
  {0  1  2  3  4  5  6  7}   UIIMG
  
  {1  2  3  4  5  6  7  8}   EXIF
- {0, 4, 1, 5, 6, 2, 7, 3};  UIIMG
+ {0, 4, 1, 5, 6, 3, 7, 2};  UIIMG
 
  */
 
 // EXIF ORIENTATIONS
 typedef enum {
-    kTopLeft			= 1, // UIImageOrientationUp,           (0,0) at top left
+    kTopLeft            = 1, // UIImageOrientationUp,           (0,0) at top left
     kTopRight           = 2, // UIImageOrientationUpMirrored,   (0,0) at top right
     kBottomRight        = 3, // UIImageOrientationDown          (0,0) at bottom right
     kBottomLeft         = 4, // UIImageOrientationDownMirrored  (0,0) at bottom left
     kLeftTop            = 5, // UIImageOrientationLeftMirrored  (0,0) at left top
-    kRightTop           = 6, // UIImageOrientationLeft          (0,0) at right top
+    kLeftBottom         = 6, // UIImageOrientationLeft          (0,0) at right top
     kRightBottom        = 7, // UIImageOrientationRightMirrored (0,0) at right bottom
-    kLeftBottom         = 8  // UIImageOrientationRight         (0,0) at left bottom
+    kRightTop           = 8  // UIImageOrientationRight         (0,0) at left bottom
 } ExifOrientation;
 
 /*

@@ -10,14 +10,14 @@
 uint EXIFOrientationFromUIOrientation(UIImageOrientation uiorientation)
 {
     if (uiorientation > 7) return 1;
-    int orientations[8] = {1, 3, 6, 8, 2, 4, 5, 7};
+    int orientations[8] = {1, 3, 8, 6, 2, 4, 5, 7};
     return orientations[uiorientation];
 }
 
 UIImageOrientation ImageOrientationFromEXIFOrientation(uint exiforientation)
 {
     if ((exiforientation < 1) || (exiforientation > 8)) return UIImageOrientationUp;    
-    int orientations[8] = {0, 4, 1, 5, 6, 2, 7, 3};
+    int orientations[8] = {0, 4, 1, 5, 6, 3, 7, 2};
     return orientations[exiforientation];
 }
 
@@ -68,9 +68,9 @@ NSString *EXIFOrientationNameFromOrientation(uint orientation)
                       @"Bottom Right",
                       @"Bottom Left",
                       @"Left Top",
-                      @"Right Top",
-                      @"Right Bottom",
                       @"Left Bottom",
+                      @"Right Bottom",
+                      @"Right Top",
                       nil];
     return [names objectAtIndex:orientation];
 }
