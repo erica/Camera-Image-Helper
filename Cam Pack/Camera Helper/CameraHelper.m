@@ -221,6 +221,19 @@
 
 #pragma mark - Output Cleanup
 
+- (void) setVideoOutputScale: (CGFloat) scaleFactor
+{
+    [_session beginConfiguration];
+    
+    NSArray *outputs = _session.outputs;
+    for (AVCaptureOutput *output in outputs)
+        for (AVCaptureConnection *connection in output.connections)
+            connection.videoScaleAndCropFactor = scaleFactor;
+    
+    [_session commitConfiguration];
+
+}
+
 - (void) removeOutputs
 {
     [_session beginConfiguration];
@@ -280,6 +293,7 @@
 {
     // NSLog(@"%@", [(AVCaptureMetadataOutput *) captureOutput availableMetadataObjectTypes]);
 
+    // These are arbitrary. Pick and choose whichever types you like
     NSArray *codeTypes = @[AVMetadataObjectTypeUPCECode,
                            AVMetadataObjectTypeCode39Code,
                            AVMetadataObjectTypeCode39Mod43Code,

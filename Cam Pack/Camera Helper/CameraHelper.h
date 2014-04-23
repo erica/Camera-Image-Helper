@@ -60,6 +60,8 @@ typedef enum {
 - (UIView *) previewWithFrame: (CGRect) aFrame;
 - (void) layoutPreviewInView: (UIView *) aView;
 
+// Use a higher video scale, e.g. 1.5 for barcode recognition
+- (void) setVideoOutputScale: (CGFloat) scaleFactor;
 - (void) removeOutputs;
 
 @property (nonatomic, readonly) CIImage *ciImage;
